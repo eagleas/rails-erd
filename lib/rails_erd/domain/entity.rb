@@ -11,7 +11,8 @@ module RailsERD
         private
 
         def concrete_from_models(domain, models)
-          models.collect { |model| new(domain, model.name, model) }
+          models.collect { |model| new(domain, model.name, model,
+            (model.erd_num if model.respond_to?(:erd_num)) ) }
         end
 
         def abstract_from_models(domain, models)
@@ -34,8 +35,10 @@ module RailsERD
       # model (for concrete entities) or given name (for abstract entities).
       attr_reader :name
 
-      def initialize(domain, name, model = nil) # @private :nodoc:
-        @domain, @name, @model = domain, name, model
+      attr_reader :num
+
+      def initialize(domain, name, model = nil, num = nil) # @private :nodoc:
+        @domain, @name, @model, @num = domain, name, model, num
       end
 
       # Returns an array of attributes for this entity.
